@@ -10,7 +10,6 @@
 	<li>3</li>
 </ul>
 
-
 А если в массиве встречается массив (например, [1,2, [1.1,1.2,1.3] ,3])
 то делать вложенный список. Для проверки на массив используйте Array.isArray()
 
@@ -28,44 +27,36 @@
 </ul>
 
  */
+void function () {
+    const arr = [1, 2, 3];
+    const arr2 = [1, 2, [1.1, 1.2, 1.3], 3];
+    const arr3 = [1, 2, [1.1, 1.2, 1.3], 3, 4, 5, [2, 3, [3, 2, 4], 4, 5]];
 
-const arr = [1,2,3];
-const arr2 = [1,2,[1.1,1.2,1.3], 3];
-const arr3 = [1,2,[1.1,1.2,1.3], [2,5,7], 3];
+    const generateList = (array) => {
+        const generateUl = (array) => {
 
-const generateList = (array) => {
+            if (Array.isArray(array)) {
+                const generateListItems = (array, elem) => {
 
-    if (Array.isArray(array)){
-
-        let ulTag = document.createElement('ul');
-        document.body.prepend(ulTag);
-
-        for (let i of array) {
-
-            let liTag = document.createElement('li');
-            liTag.innerHTML = `${i}`;
-            ulTag.append(liTag);
-
-            if (Array.isArray(i)){
-
-                const arrTypeElement = document.querySelector(` body ul li:nth-child(${array.indexOf(i) +1 }) `);
-                const ulTag2 = document.createElement('ul');
-                ulTag2.id ='inner-ul';
-                arrTypeElement.append(ulTag2);
-
-                for (let k of i ){
-                    let liTag2 = document.createElement('li');
-                    liTag2.innerHTML = `${k}`;
-                    ulTag2.append(liTag2);
+                    for (let item of array) {
+                        let li = document.createElement('li');
+                        if (Array.isArray(item)) {
+                            let ulInner = document.createElement('ul');
+                            li.append(generateListItems(item, ulInner));
+                        } else {
+                            li.innerHTML = item;
+                        }
+                        elem.append(li);
+                    }
+                    return elem;
                 }
-
-                document.getElementById('inner-ul').previousSibling.remove();
-
+                return generateListItems(array, document.createElement('ul'));
+            } else {
+                return alert('You mast enter an Array');
             }
-        }
-    } else {
-        alert ('error array bad data');
-    }
-};
 
-generateList(arr2);
+        }
+        document.body.append(generateUl(arr3));
+    }
+    generateList(arr3);
+}();
