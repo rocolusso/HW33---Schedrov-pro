@@ -52,7 +52,7 @@ void function () {
                 }
                 return generateListItems(array, document.createElement('ul'));
             } else {
-                return alert('You mast enter an Array');
+                return alert('You must enter an Array');
             }
 
         }
